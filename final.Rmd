@@ -1,0 +1,55 @@
+# Basic R for Graphics"
+
+###  Scott Karr
+###  HW4 School Expenditures by State
+###  11.29.2015
+### Packages:  ggplot2, data.tables
+
+##  This data frame contains the following columns:
+####  education Per-capita education expenditures, dollars.
+####  income Per-capita income, dollars.
+####  young Proportion under 18, per 1000.
+####  urban Proportion urban, per 1000.
+
+# Setup and Load data
+1. Load Anscombe education expenditure data by state.
+
+```{r}
+## Load Data Frame from website
+require(data.table)
+require(ggplot2)
+
+AnscombeUrl <- "http://vincentarelbundock.github.io/Rdatasets/csv/car/Anscombe.csv"
+df_Anscombe <- read.table(file = AnscombeUrl, header = TRUE, sep = ",")
+dt_Anscombe <- data.table(df_Anscombe)
+```
+
+## Generate Descriptive Statistics
+2. Generate summary level descriptive statistics:
+
+```{r}
+head(df_Anscombe)
+str(df_Anscombe)
+```
+
+## Prepare Dataset for Graphics
+3. Rename columns as needed
+
+```{r}
+## Rename "state" column
+##setnames(df_Anscombe, old=c(""), new=c("state"))
+colnames(df_Anscombe)[c(1)] <- c("state")
+```
+
+
+4.  Histogram showing count of states by increasing per-capita-spending by state
+```{r}
+ggplot(data = df_Anscombe) + geom_histogram(aes(x = education))
+```
+
+5. Plot per-capita-spending to per-capita income grouped by state
+```{r}
+g <- ggplot(df_Anscombe, aes(x = education, y = income)) + geom_point()
+g <- g + geom_point(aes(color = state)) + facet_wrap(~state)
+g
+```
